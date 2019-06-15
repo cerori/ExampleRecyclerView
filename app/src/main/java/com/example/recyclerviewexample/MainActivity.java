@@ -5,10 +5,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.View;
 
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
+
+    private static final String TAG = MainActivity.class.getSimpleName();
 
     private RecyclerView mRecyclerView;
     private RecyclerAdapter mAdapter;
@@ -23,6 +27,12 @@ public class MainActivity extends AppCompatActivity {
         mAdapter = new RecyclerAdapter(mList);
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mAdapter.setOnItemClickListener(new RecyclerAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View v, int pos) {
+                Log.d(TAG, "pos : " + pos);
+            }
+        });
 
         addItem(getResources().getDrawable(R.drawable.ic_launcher_background), "title1", "content1");
         addItem(getResources().getDrawable(R.drawable.ic_launcher_background), "title2", "content2");

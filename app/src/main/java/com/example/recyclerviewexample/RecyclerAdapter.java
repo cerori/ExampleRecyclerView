@@ -17,6 +17,16 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
     private ArrayList<RecyclerViewItem> mData = new ArrayList<>();
 
+    public interface OnItemClickListener {
+        void onItemClick(View v, int pos);
+    }
+
+    private OnItemClickListener mListener = null;
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        mListener = listener;
+    }
+
     public RecyclerAdapter(ArrayList<RecyclerViewItem> list) {
         mData = list;
     }
@@ -56,7 +66,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         TextView title;
         TextView content;
 
-        public ViewHolder(@NonNull View itemView) {
+        public ViewHolder(@NonNull final View itemView) {
             super(itemView);
 
             image = itemView.findViewById(R.id.img_image);
@@ -66,7 +76,14 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Log.d("RecyclerView item", "clicked : ");
+                    int pos = getAdapterPosition();
+                    if (pos != RecyclerView.NO_POSITION) {
+                        Log.d("RecyclerView", "ViewHolder clicked : " + pos);
+                        if (mListener != null) {
+                            Log.d("RecyclerView", "custom item click event");
+                            mListener.onItemClick(v, pos);
+                        }
+                    }
                 }
             });
         }
